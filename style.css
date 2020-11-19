@@ -1,0 +1,53 @@
+body { 
+  margin: 0;
+}
+
+.main {
+  max-width: 800px;
+  margin: 20px auto 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form label {
+  margin: 8px
+}
+
+.form button {
+  display: block;
+  border: none;
+  font-size: 16px;
+  background-color: #cfcfcf;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .3s linear;
+  text-align: center;
+  margin: 20px auto 0 auto;
+}
+
+.form button:hover {
+  color: #fff;
+  background-color: rebeccapurple;
+}
+
+.searchButton {
+  display: block;
+  border: none;
+  font-size: 20px;
+  background-color: #cfcfcf;
+  padding: 12px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: .3s linear;
+  text-align: center;
+}
+
+.searchButton:hover {
+  color: #fff;
+  background-color: rebeccapurple;
+}
