@@ -33,44 +33,6 @@ function addDescription() {
   })
 }
 
-function searchLibrary() {
-  const searchText = prompt('Введите имя библиотеки')
-
-  let currentLibrary;
-
-  List.forEach(function (library) {
-    if (library.name === searchText) {
-      currentLibrary = library
-    }
-  })
-
-  if (!currentLibrary) {
-    console.log('Что-то пошло не так')
-  }
-
-  return currentLibrary
-}
-
-function searchGroup(library) {
-  const searchText = prompt('Какой отдел Вас интересует?')
-
-  let currentGroup;
-
-  library.edition.forEach(function (group) {
-    if (group.name === searchText) {
-      currentGroup = group
-    }
-  })
-
-  if (!currentGroup) {
-    console.log('Что-то пошло не так')
-  }
-
-  return currentGroup
-}
-
-
-
 const List = [pushkinLibrary, TPULibrary]
 
 const searchButton = document.querySelector('.searchButton')
@@ -81,6 +43,7 @@ searchButton.addEventListener('click', search)
 
 function search() {
   if (confirm('Вы хотите начать поиск издания?')) {
+    content.innerHTML = ''
     createLibraryHtml()
   }
 }
@@ -113,25 +76,26 @@ function createGroupHtml(libraryName) {
   List.forEach(function (library) {
     if (library.name === libraryName) {
       let gropsHtml = ''
+      if (library.groups.length > 0) {
+        library.groups.forEach(function (group) {
+          const groupLabel = `<label><input name="group" value='${group.name}' type='radio'>${group.name}</label>`
+          gropsHtml += groupLabel
+        })
 
-      library.groups.forEach(function (group) {
-        const groupLabel = `<label><input name="group" value='${group.name}' type='radio'>${group.name}</label>`
-        gropsHtml += groupLabel
-      })
-
-      const currentHtml = `<form class="form">
+        const currentHtml = `<form class="form">
                           ${gropsHtml}
                           <button>Подтвердить</button>
                           </form>`
 
-      content.innerHTML = ''
-      content.insertAdjacentHTML('beforeend', currentHtml)
+        content.innerHTML = ''
+        content.insertAdjacentHTML('beforeend', currentHtml)
 
-      const form = document.querySelector('.form')
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        createEditionHtml(form.elements["group"].value, library)
-      })
+        const form = document.querySelector('.form')
+        form.addEventListener('submit', function (event) {
+          event.preventDefault()
+          createEditionHtml(form.elements["group"].value, library)
+        })
+      } else { alert('Библиотека пуста') }
 
     }
   })
@@ -142,33 +106,49 @@ function createEditionHtml(groupName, thisLibrary) {
     if (group.name === groupName) {
 
       let editionHtml = ''
+      if (group.edition.length > 0) {
+        group.edition.forEach(function (edition) {
+          const editionLabel = `<label><input name="edition" value='${edition.name}' type='radio'>${edition.name}</label>`
+          editionHtml += editionLabel
+        })
 
-      group.edition.forEach(function (edition) {
-        const editionLabel = `<label><input name="edition" value='${edition.name}' type='radio'>${edition.name}</label>`
-        editionHtml += editionLabel
-      })
-
-      const currentHtml = `<form class="form">
+        const currentHtml = `<form class="form">
                           ${editionHtml}
                           <button>Подтвердить</button>
                           </form>`
 
-      content.innerHTML = ''
-      content.insertAdjacentHTML('beforeend', currentHtml)
+        content.innerHTML = ''
+        content.insertAdjacentHTML('beforeend', currentHtml)
 
-      const form = document.querySelector('.form')
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        createEditionAtributeHtml(form.elements["edition"].value, group)
-      })
-
+        const form = document.querySelector('.form')
+        form.addEventListener('submit', function (event) {
+          event.preventDefault()
+          createEditionAtributeHtml(form.elements["edition"].value, group)
+        })
+      } else { alert('Отдел пуст') }
     }
   })
 
 }
 
+function createEditionAtributeHtml(editionName, thisGroup) {
+  thisGroup.edition.forEach(function (edition) {
+    if (edition.name === editionName) {
+      const atrArray = Object.entries(edition)
 
-function createEditionAtributeHtml (editionName, thisGroup) {
-  console.log(editionName)
-  console.log(thisGroup)
+      let html = ''
+
+      atrArray.forEach(function (itemAtrArray) {
+        let arrhtml = ''
+        itemAtrArray.forEach(function (item) {
+          let itemHtml = `<span>${item}</span> `
+          arrhtml += itemHtml
+        })
+        const resultHtml = `<div>${arrhtml}</div>`
+        html += resultHtml
+      })
+      content.innerHTML = ''
+      content.insertAdjacentHTML('beforeend', html)
+    }
+  })
 }
